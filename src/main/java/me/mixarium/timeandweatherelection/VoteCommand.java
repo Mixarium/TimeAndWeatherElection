@@ -20,15 +20,12 @@ public abstract class VoteCommand implements CommandExecutor {
     private final VoteTimeoutScheduler voteTimeoutScheduler;
     private final String voteTimeoutMessage;
 
-
-    // percentage to success, divided by 100
-
     public VoteCommand(String name, VoteTimeoutScheduler voteTimeoutScheduler) {
         this.name = name;
         this.successMessage = "&2Vote for &6" + name + "&2 was successful.";
         this.unnecessaryVoteMessage = "&cIt is unnecessary to vote for &6" + name + "&c.";
         this.alreadyVotedMessage = "&cYou have already voted for &6" + name + "&c.";
-        this.voteTimeoutMessage = "&cVote for &6" + name + " &ctimed out.";
+        this.voteTimeoutMessage = "&cVote for &6" + name + " &chas expired.";
         this.voteTimeoutScheduler = voteTimeoutScheduler;
     }
 
@@ -38,7 +35,7 @@ public abstract class VoteCommand implements CommandExecutor {
     }
      */
 
-    // refer to the specificvotecommands package because these methods vary by instance
+    // refer to the specificvotecommands package because these methods vary by subclass
     protected boolean checkNecessity() {return false;}
     protected void doVoteAction() {}
 
@@ -72,13 +69,13 @@ public abstract class VoteCommand implements CommandExecutor {
                 Bukkit.getServer().broadcastMessage(ColorUtil.translateColorCodes(voteTimeoutMessage));
             });
         }
+
+        Server server = Bukkit.getServer();
         double playersCount = Bukkit.getServer().getOnlinePlayers().length;
         double playersRequired = Math.ceil(TimeAndWeatherElection.DECIMAL_TO_SUCCESS * playersCount);
         int voteCount = voteList.size();
 
-        Server server = Bukkit.getServer();
-
-        if (voteCount == (int) playersRequired) {
+        if (voteCount >= (int) playersRequired) {
             voteTimeoutScheduler.cancel(name);
             doVoteAction();
             voteList.clear();

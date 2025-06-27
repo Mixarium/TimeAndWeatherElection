@@ -1,24 +1,55 @@
 package me.mixarium.timeandweatherelection;
 
+import me.mixarium.timeandweatherelection.util.misc.ColorUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.util.List;
+
 public class VoteListener extends PlayerListener {
 
-    private static TimeAndWeatherElection plugin;
-    public VoteListener(TimeAndWeatherElection instance) {
-        plugin = instance;
+    private final VoteTimeoutScheduler voteTimeoutScheduler;
+    public VoteListener(VoteTimeoutScheduler voteTimeoutScheduler) {
+        this.voteTimeoutScheduler = voteTimeoutScheduler;
+    }
+
+    public void evaluateOnLeave() {
+        for (int i = 0; i <= 4; i++) {
+            String cmdName = TimeAndWeatherElection.getNamesOfCommands(i);
+            List<Player> evaluatedVoteList = VoteLists.getVoteList(cmdName);
+
+            Server server = Bukkit.getServer();
+            double playersCount = server.getOnlinePlayers().length - 1;
+            double playersRequired = Math.ceil(TimeAndWeatherElection.DECIMAL_TO_SUCCESS * playersCount);
+            int voteCount = evaluatedVoteList.size();
+
+            if (voteCount >= playersRequired) {
+                String successMessage = "&2Vote for &6" + cmdName + "&2 was successful.";
+                voteTimeoutScheduler.cancel(cmdName);
+                VoteCommand cmdInstance = TimeAndWeatherElection.getVoteCommandHashMapEntry(cmdName);
+                cmdInstance.doVoteAction();
+                evaluatedVoteList.clear();
+                server.broadcastMessage(ColorUtil.translateColorCodes(successMessage));
+            }
+
+        }
+
     }
 
     @Override
     public void onPlayerQuit(PlayerQuitEvent event) {
         VoteLists.removeVoteOnLeave(event.getPlayer());
+        evaluateOnLeave();
     }
 
     @Override
     public void onPlayerKick(PlayerKickEvent event) {
         VoteLists.removeVoteOnLeave(event.getPlayer());
+        evaluateOnLeave();
     }
 
 }

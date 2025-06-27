@@ -33,5 +33,4 @@ public class VoteLists {
         sunList.removeIf(p -> p.equals(player));
         thunderList.removeIf(p -> p.equals(player));
     }
-
 }

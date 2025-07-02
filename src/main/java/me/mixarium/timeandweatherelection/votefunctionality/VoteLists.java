@@ -1,5 +1,6 @@
-package me.mixarium.timeandweatherelection;
+package me.mixarium.timeandweatherelection.votefunctionality;
 
+import me.mixarium.timeandweatherelection.TimeAndWeatherElection;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;

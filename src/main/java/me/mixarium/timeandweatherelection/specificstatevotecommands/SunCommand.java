@@ -2,7 +2,7 @@ package me.mixarium.timeandweatherelection.specificstatevotecommands;
 
 import me.mixarium.timeandweatherelection.TimeAndWeatherElection;
 import me.mixarium.timeandweatherelection.VoteCommand;
-import me.mixarium.timeandweatherelection.VoteTimeoutScheduler;
+import me.mixarium.timeandweatherelection.votefunctionality.VoteTimeoutScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -18,7 +18,7 @@ public class SunCommand extends VoteCommand {
     }
 
     @Override
-    protected void doVoteAction() {
+    public void doVoteAction() {
         World world = Bukkit.getServer().getWorld("world");
         world.setThundering(false);
         world.setStorm(false);

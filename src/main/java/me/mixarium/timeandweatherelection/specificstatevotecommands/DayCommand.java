@@ -2,7 +2,7 @@ package me.mixarium.timeandweatherelection.specificstatevotecommands;
 
 import me.mixarium.timeandweatherelection.TimeAndWeatherElection;
 import me.mixarium.timeandweatherelection.VoteCommand;
-import me.mixarium.timeandweatherelection.VoteTimeoutScheduler;
+import me.mixarium.timeandweatherelection.votefunctionality.VoteTimeoutScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -14,11 +14,11 @@ public class DayCommand extends VoteCommand {
     @Override
     protected boolean checkNecessity() {
         World world = Bukkit.getServer().getWorld("world");
-        return world.getTime() >= 13000L;
+        return world.getTime() >= 13000L - 20L * TimeAndWeatherElection.getSecondsTillTransition();
     }
 
     @Override
-    protected void doVoteAction() {
+    public void doVoteAction() {
         World world = Bukkit.getServer().getWorld("world");
         world.setTime(0L);
     }

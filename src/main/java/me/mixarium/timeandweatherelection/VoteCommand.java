@@ -2,6 +2,8 @@ package me.mixarium.timeandweatherelection;
 
 import me.mixarium.timeandweatherelection.util.log.LogUtil;
 import me.mixarium.timeandweatherelection.util.misc.ColorUtil;
+import me.mixarium.timeandweatherelection.votefunctionality.VoteLists;
+import me.mixarium.timeandweatherelection.votefunctionality.VoteTimeoutScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
@@ -29,28 +31,22 @@ public abstract class VoteCommand implements CommandExecutor {
         this.voteTimeoutScheduler = voteTimeoutScheduler;
     }
 
-    /* future help message
-    public VoteCommand() {
-        this("tawe");
-    }
-     */
-
     // refer to the specificvotecommands package because these methods vary by subclass
     protected boolean checkNecessity() {return false;}
-    protected void doVoteAction() {}
+    public void doVoteAction() {}
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!(sender instanceof Player)) {
             LogUtil.logConsoleInfo("[TimeAndWeatherElection] You must be in-game to run this command.");
-            return false;
+            return true;
         }
 
         Player player = (Player) sender;
 
         if (!checkNecessity()) {
             player.sendMessage(ColorUtil.translateColorCodes(unnecessaryVoteMessage));
-            return false;
+            return true;
         }
 
         // this is where the vote is trying to be added
@@ -58,7 +54,7 @@ public abstract class VoteCommand implements CommandExecutor {
 
         if (voteList.contains(player)) {
             player.sendMessage(ColorUtil.translateColorCodes(alreadyVotedMessage));
-            return false;
+            return true;
         } else {
             voteList.add(player);
         }
@@ -72,7 +68,8 @@ public abstract class VoteCommand implements CommandExecutor {
 
         Server server = Bukkit.getServer();
         double playersCount = Bukkit.getServer().getOnlinePlayers().length;
-        double playersRequired = Math.ceil(TimeAndWeatherElection.DECIMAL_TO_SUCCESS * playersCount);
+        double coefficient = (double) TimeAndWeatherElection.getPercentageToSuccess() / 100D;
+        double playersRequired = Math.ceil(coefficient * playersCount);
         int voteCount = voteList.size();
 
         if (voteCount >= (int) playersRequired) {

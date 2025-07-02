@@ -1,5 +1,7 @@
-package me.mixarium.timeandweatherelection;
+package me.mixarium.timeandweatherelection.votefunctionality;
 
+import me.mixarium.timeandweatherelection.TimeAndWeatherElection;
+import me.mixarium.timeandweatherelection.VoteCommand;
 import me.mixarium.timeandweatherelection.util.misc.ColorUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -24,7 +26,8 @@ public class VoteListener extends PlayerListener {
 
             Server server = Bukkit.getServer();
             double playersCount = server.getOnlinePlayers().length - 1;
-            double playersRequired = Math.ceil(TimeAndWeatherElection.DECIMAL_TO_SUCCESS * playersCount);
+            double coefficient = (double) TimeAndWeatherElection.getPercentageToSuccess() / 100D;
+            double playersRequired = Math.ceil(coefficient * playersCount);
             int voteCount = evaluatedVoteList.size();
 
             if (voteCount >= playersRequired) {

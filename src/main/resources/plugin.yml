@@ -1,12 +1,15 @@
 # To learn about plugin YAML attributes, visit: http://wiki.bukkit.org/Plugin_YAML or https://www.spigotmc.org/wiki/plugin-yml/
 # To learn about semantic versioning, visit: https://semver.org
 main: me.mixarium.timeandweatherelection.TimeAndWeatherElection
-version: 1.0.1
+version: 1.1.0
 name: TimeAndWeatherElection
 author: Mixarium
 website: https://github.com/Mixarium/TimeAndWeatherElection
 description: Vote plugin that starts/adds votes to change time or weather in the Overworld.
 commands:
+  tawe:
+    description: Opens a help page for this plugin. For configuration commands, use /tawe config.
+    usage: /tawe (about|config)
   day:
     description: Starts/adds a vote for setting daytime.
   night:

@@ -1,5 +1,6 @@
-package me.mixarium.timeandweatherelection;
+package me.mixarium.timeandweatherelection.votefunctionality;
 
+import me.mixarium.timeandweatherelection.TimeAndWeatherElection;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
@@ -21,7 +22,7 @@ public class VoteTimeoutScheduler {
         int taskID = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             taskIDs.remove(cmdName);
             onTimeout.run();
-        }, 20L * TimeAndWeatherElection.SECONDS_TILL_TIMEOUT);
+        }, 20L * TimeAndWeatherElection.getSecondsTillTimeout());
 
         taskIDs.put(cmdName, taskID);
     }

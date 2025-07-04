@@ -1,7 +1,7 @@
 # To learn about plugin YAML attributes, visit: http://wiki.bukkit.org/Plugin_YAML or https://www.spigotmc.org/wiki/plugin-yml/
 # To learn about semantic versioning, visit: https://semver.org
 main: me.mixarium.timeandweatherelection.TimeAndWeatherElection
-version: 1.1.0
+version: 1.1.1
 name: TimeAndWeatherElection
 author: Mixarium
 website: https://github.com/Mixarium/TimeAndWeatherElection

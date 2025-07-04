@@ -24,6 +24,9 @@ public class VoteListener extends PlayerListener {
             String cmdName = TimeAndWeatherElection.getNamesOfCommands(i);
             List<Player> evaluatedVoteList = VoteLists.getVoteList(cmdName);
 
+            // bug fix, this was done to prevent the initiation of all votes when the only player on the server leaves
+            if (evaluatedVoteList.isEmpty()) {continue;}
+
             Server server = Bukkit.getServer();
             double playersCount = server.getOnlinePlayers().length - 1;
             double coefficient = (double) TimeAndWeatherElection.getPercentageToSuccess() / 100D;
